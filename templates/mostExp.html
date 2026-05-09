@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Найдорожчий тур до Туреччини{% endblock %}
+{% block body %}
+
+<h2 class="mb-4">Найдорожчий тур до Туреччини</h2>
+
+{% if mostExp %}
+<div class="table-responsive">
+  <table class="table table-striped align-middle">
+    <thead class="table-dark">
+      <tr><th>Країна</th><th>Туроператор</th><th>Ціна (USD)</th><th>Днів</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ mostExp.країна }}</td>
+        <td>{{ mostExp.туроператор }}</td>
+        <td><strong>{{ mostExp.ціна }}</strong></td>
+        <td>{{ mostExp.кількість_днів }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="text-center py-4">
+  <img src="{{ url_for('static', filename='no_data.png') }}" alt="no data" width="180">
+  <p class="text-muted mt-3">Немає даних</p>
+</div>
+{% endif %}
+
+{% endblock %}

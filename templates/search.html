@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Вибір запиту{% endblock %}
+{% block body %}
+
+<h2 class="mb-4">Вибір запиту</h2>
+
+<form action="{{ url_for('search') }}" method="POST">
+  <div class="card mb-3">
+    <div class="card-body">
+
+      <!-- Радіо 1: по туроператору -->
+      <div class="mb-3">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="query_type"
+                 id="r_operator" value="operator" checked>
+          <label class="form-check-label fw-semibold" for="r_operator">
+            Пошук за туроператором
+          </label>
+        </div>
+        <div class="ms-4 mt-2" id="block_operator">
+          <select name="operator_val" class="form-select w-auto">
+            <option value="">— Оберіть —</option>
+            {% for op in operators %}
+            <option value="{{ op }}">{{ op }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- Радіо 2: по днях -->
+      <div class="mb-3">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="query_type"
+                 id="r_days" value="days">
+          <label class="form-check-label fw-semibold" for="r_days">
+            Тури від N днів
+          </label>
+        </div>
+        <div class="ms-4 mt-2" id="block_days">
+          <input type="number" name="days_val" class="form-control w-auto"
+                 placeholder="Кількість днів" min="1">
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- Радіо 3: найдорожчий до Туреччини -->
+      <div class="mb-3">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="query_type"
+                 id="r_expensive" value="expensive">
+          <label class="form-check-label fw-semibold" for="r_expensive">
+            Найдорожчий тур до Туреччини
+          </label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary px-4">
+    <i class="bi bi-play-fill me-1"></i>Виконати запит
+  </button>
+</form>
+
+<script>
+  // Підсвічуємо активний блок при виборі радіо
+  const radios = document.querySelectorAll('input[name="query_type"]');
+  const blocks = {
+    operator: document.getElementById('block_operator'),
+    days:     document.getElementById('block_days'),
+  };
+
+  function updateBlocks() {
+    const val = document.querySelector('input[name="query_type"]:checked').value;
+    Object.entries(blocks).forEach(([key, el]) => {
+      el.style.opacity = key === val ? '1' : '0.4';
+      el.querySelectorAll('input, select').forEach(f => f.disabled = key !== val);
+    });
+  }
+
+  radios.forEach(r => r.addEventListener('change', updateBlocks));
+  updateBlocks();
+</script>
+
+{% endblock %}

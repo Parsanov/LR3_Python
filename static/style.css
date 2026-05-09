@@ -1,0 +1,52 @@
+/* Власний CSS — ЛР3 */
+
+/* тег */
+body {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* тег */
+h2 {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #212529;
+}
+
+/* тег */
+table {
+    font-size: 0.92rem;
+}
+
+/* клас */
+.navbar-brand {
+    font-size: 1.15rem;
+    letter-spacing: 0.3px;
+}
+
+/* клас */
+.card {
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+
+/* id */
+#block_operator,
+#block_days {
+    transition: opacity 0.2s;
+}
+
+/* клас */
+.form-label {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+/* тег */
+footer {
+    text-align: center;
+    color: #adb5bd;
+    font-size: 0.8rem;
+    padding: 24px 0;
+}

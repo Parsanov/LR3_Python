@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Всі тури{% endblock %}
+{% block body %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="mb-0">Туристичні поїздки</h2>
+  <a href="{{ url_for('add_trip') }}" class="btn btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>Додати тур
+  </a>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Країна</th>
+        <th>Туроператор</th>
+        <th>Ціна (USD)</th>
+        <th>Днів</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for trip in trips %}
+      <tr>
+        <td class="text-muted">{{ loop.index }}</td>
+        <td>{{ trip.країна }}</td>
+        <td>{{ trip.туроператор }}</td>
+        <td><strong>{{ trip.ціна }}</strong></td>
+        <td>{{ trip.кількість_днів }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
