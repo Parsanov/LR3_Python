@@ -19,13 +19,11 @@ trips = [
 OPERATORS = sorted(set(t["туроператор"] for t in trips))
 
 
-# ── Головна ──────────────────────────────────────────────────────────────────
 @app.route("/")
 def index():
     return render_template("index.html", trips=trips)
 
 
-# ── Пошук за туроператором ───────────────────────────────────────────────────
 @app.route("/tour_operator", methods=["GET"])
 def tour_operator():
     value = request.args.get("findTour", "").strip()
@@ -46,7 +44,6 @@ def tour_operator():
                            operators=OPERATORS)
 
 
-# ── Пошук за мінімальною кількістю днів ─────────────────────────────────────
 @app.route("/days", methods=["GET"])
 def find_days():
     n_raw = request.args.get("n", "").strip()
@@ -74,7 +71,6 @@ def find_days():
                            searched=searched)
 
 
-# ── Найдорожчий тур до Туреччини ─────────────────────────────────────────────
 @app.route("/the_most_expensive")
 def most_expensive():
     turkey = [t for t in trips if t["країна"] == "Туреччина"]
@@ -84,7 +80,6 @@ def most_expensive():
     return render_template("mostExp.html", mostExp=most_exp)
 
 
-# ── Сторінка вибору запиту ───────────────────────────────────────────────────
 @app.route("/search", methods=["GET", "POST"])
 def search():
     if request.method == "POST":
@@ -113,7 +108,6 @@ def search():
     return render_template("search.html", operators=OPERATORS)
 
 
-# ── Додавання нового туру ────────────────────────────────────────────────────
 @app.route("/add", methods=["GET", "POST"])
 def add_trip():
     errors = {}
@@ -122,19 +116,16 @@ def add_trip():
     if request.method == "POST":
         form_data = request.form.to_dict()
 
-        # Валідація країни
         country = form_data.get("country", "").strip()
         if not country:
             errors["country"] = "Поле не може бути порожнім"
         elif not all(c.isalpha() or c.isspace() or c == "'" for c in country):
             errors["country"] = "Назва країни має містити лише літери"
 
-        # Валідація туроператора
         operator = form_data.get("operator", "").strip()
         if not operator:
             errors["operator"] = "Поле не може бути порожнім"
 
-        # Валідація ціни
         price_raw = form_data.get("price", "").strip()
         price = None
         try:
@@ -144,7 +135,6 @@ def add_trip():
         except (ValueError, TypeError):
             errors["price"] = "Ціна має бути числом більше 0"
 
-        # Валідація кількості днів
         days_raw = form_data.get("days", "").strip()
         days = None
         try:
@@ -159,7 +149,6 @@ def add_trip():
             return render_template("add.html", errors=errors,
                                    form_data=form_data, operators=OPERATORS)
 
-        # Додавання запису
         trips.append({
             "країна": country,
             "туроператор": operator,
@@ -173,7 +162,6 @@ def add_trip():
                            operators=OPERATORS)
 
 
-# ── 404 ──────────────────────────────────────────────────────────────────────
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
