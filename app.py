@@ -51,20 +51,24 @@ def tour_operator():
 def find_days():
     n_raw = request.args.get("n", "").strip()
     result = None
-    searched = "n" in request.args and n_raw != ""
+    submitted = "n" in request.args
+    searched = submitted and n_raw != ""
 
-    if searched:
-        try:
-            n = int(n_raw)
-            if n <= 0:
-                raise ValueError
-            result = [t for t in trips if t["кількість_днів"] >= n]
-            if result:
-                flash(f"Знайдено {len(result)} турів", "success")
-            else:
-                flash("За даним критерієм турів не знайдено", "warning")
-        except ValueError:
-            flash("Кількість днів має бути цілим позитивним числом", "danger")
+    if submitted:
+        if not n_raw:
+            flash("Введіть кількість днів", "danger")
+        else:
+            try:
+                n = int(n_raw)
+                if n <= 0:
+                    raise ValueError
+                result = [t for t in trips if t["кількість_днів"] >= n]
+                if result:
+                    flash(f"Знайдено {len(result)} турів", "success")
+                else:
+                    flash("За даним критерієм турів не знайдено", "warning")
+            except ValueError:
+                flash("Кількість днів має бути цілим позитивним числом", "danger")
 
     return render_template("days.html", result=result, n_raw=n_raw,
                            searched=searched)
