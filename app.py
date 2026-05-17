@@ -30,13 +30,17 @@ def index():
 def tour_operator():
     value = request.args.get("findTour", "").strip()
     result = None
+    submitted = "findTour" in request.args
 
-    if value:
-        result = [t for t in trips if t["туроператор"].lower() == value.lower()]
-        if result:
-            flash(f"Знайдено {len(result)} турів", "success")
+    if submitted:
+        if not value:
+            flash("Оберіть туроператора або введіть назву вручну", "danger")
         else:
-            flash("За даним критерієм турів не знайдено", "warning")
+            result = [t for t in trips if t["туроператор"].lower() == value.lower()]
+            if result:
+                flash(f"Знайдено {len(result)} турів", "success")
+            else:
+                flash("За даним критерієм турів не знайдено", "warning")
 
     return render_template("operator.html", result=result, value=value,
                            operators=OPERATORS)
